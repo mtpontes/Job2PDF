@@ -8,9 +8,9 @@ const SELECTORS = {
     position: '.job-details-jobs-unified-top-card__job-title, .jobs-unified-top-card__job-title',
     location: '.job-details-jobs-unified-top-card__primary-description, .jobs-unified-top-card__primary-description',
     description: '#job-details, .jobs-description__content',
-    // Broad selector for the apply button container/button
     applyButton: '.jobs-apply-button--top-card button, .jobs-apply-button, button[aria-label*="Apply"], button[aria-label*="Candidatar-se"]',
-    presenceMode_and_job_type: '.artdeco-button.artdeco-button--secondary.artdeco-button--muted'
+    presenceMode_and_job_type: '.artdeco-button.artdeco-button--secondary.artdeco-button--muted',
+    local: '.job-details-jobs-unified-top-card__tertiary-description-container .tvm__text--low-emphasis'
 };
 
 function getText(selector) {
@@ -19,20 +19,20 @@ function getText(selector) {
 }
 
 function getPresenceMode() {
-    for (const descobrirOriginal of [...document.querySelectorAll(SELECTORS.presenceMode_and_job_type)]) {
+    for (const discoverOriginal of [...document.querySelectorAll(SELECTORS.presenceMode_and_job_type)]) {
         const div = document.createElement('div');
-        div.appendChild(descobrirOriginal.cloneNode(true));
+        div.appendChild(discoverOriginal.cloneNode(true));
 
-        descobrir = div.outerHTML.toLowerCase()
+        const discover = div.outerHTML.toLowerCase()
 
-        const possiveisValores = {
+        const possibleValues = {
             PRESENCIAL: ['in-person', 'in_person', 'office', 'presencial'],
             HIBRIDO: ['hybrid', 'semi_presencial', 'semi-presencial', 'semipresencial', 'híbrido', 'hibrido'],
             REMOTO: ['remote', 'remoto', 'home_office', 'home-office']
         }
 
-        for (let key in possiveisValores) {
-            const isIncludes = possiveisValores[key].some(value => descobrir.includes(value))
+        for (let key in possibleValues) {
+            const isIncludes = possibleValues[key].some(value => discover.includes(value))
 
             if (isIncludes) return key
         }
@@ -40,19 +40,19 @@ function getPresenceMode() {
 }
 
 function getJobType() {
-    for (const descobrirOriginal of [...document.querySelectorAll(SELECTORS.presenceMode_and_job_type)]) {
+    for (const discoverOriginal of [...document.querySelectorAll(SELECTORS.presenceMode_and_job_type)]) {
         const div = document.createElement('div');
-        div.appendChild(descobrirOriginal.cloneNode(true));
+        div.appendChild(discoverOriginal.cloneNode(true));
 
-        const descobrir = div.outerHTML.toLowerCase()
+        const discover = div.outerHTML.toLowerCase()
 
-        const possiveisValores = {
+        const possibleValues = {
             INTEGRAL: ['integral'],
             ESTAGIO: ['estagio']
         }
 
-        for (let key in possiveisValores) {
-            const isIncludes = possiveisValores[key].some(value => descobrir.includes(value))
+        for (let key in possibleValues) {
+            const isIncludes = possibleValues[key].some(value => discover.includes(value))
 
             if (isIncludes) return key
         }
@@ -65,6 +65,7 @@ function getJobDetails() {
     const position = getText(SELECTORS.position);
     const description = getText(SELECTORS.description);
     const sourceUrl = window.location.href;
+    const local = getText(SELECTORS.local);
 
     // Heuristics for other fields if specific selectors aren't available
     const jobType = getJobType() || 'Not specified'; // Placeholder
@@ -76,12 +77,13 @@ function getJobDetails() {
         description,
         jobType,
         presenceMode,
-        sourceUrl
+        sourceUrl,
+        local
     };
 }
 
 async function handleGeneratePdf() {
-    console.log("Track-In: Generating PDF...");
+    console.log("Job2PDF: Generating PDF...");
     const data = getJobDetails();
     const pdfBytes = await generatePdf(data);
 
@@ -116,7 +118,7 @@ function attachApplyListener() {
         // Check if it's likely the correct button (e.g., contains text)
         const text = btn.innerText.toLowerCase();
         if (text.includes('apply') || text.includes('candidatar') || text.includes('inscri')) {
-            console.log("Track-In: Apply button found and listener attached.");
+            console.log("Job2PDF: Apply button found and listener attached.");
             btn.addEventListener('click', () => {
                 // Small delay to let any native click handlers fire first if needed
                 setTimeout(handleGeneratePdf, 500);

@@ -42,6 +42,7 @@ export async function generatePdf(data) {
     y -= 10;
     drawTextLine(`Company: ${data.companyName}`);
     drawTextLine(`Presence: ${data.presenceMode}`);
+    drawTextLine(`Local: ${data.local}`);
     drawTextLine(`Type: ${data.jobType}`);
     drawTextLine(`Source: ${data.sourceUrl}`);
 
