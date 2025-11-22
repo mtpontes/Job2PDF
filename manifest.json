@@ -1,0 +1,30 @@
+{
+    "manifest_version": 3,
+    "name": "Job2PDF",
+    "version": "1.0.0",
+    "description": "Capture job details and generate PDF.",
+    "permissions": [
+        "activeTab",
+        "scripting"
+    ],
+    "background": {
+        "service_worker": "background.js",
+        "type": "module"
+    },
+    "action": {
+        "default_title": "Job2PDF: Capture Job"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "<all_urls>"
+            ],
+            "js": [
+                "content.js"
+            ]
+        }
+    ],
+    "icons": {
+        "128": "icone-128.png"
+    }
+}

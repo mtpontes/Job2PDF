@@ -1,0 +1,18 @@
+{
+  "name": "job2pdf",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "author": "Mateus Pontes",
+  "license": "MIT",
+  "description": "",
+  "dependencies": {
+    "pdf-lib": "^1.17.1"
+  },
+  "devDependencies": {
+    "vite": "^7.2.4"
+  }
+}
