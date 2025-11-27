@@ -1,6 +1,5 @@
 # Job2PDF
 
-## O que é
 Job2PDF é uma extensão para Google Chrome que captura os detalhes de uma vaga de emprego no LinkedIn e gera um arquivo PDF automaticamente. O objetivo é facilitar o registro e a organização das vagas para as quais você se candidatou.
 
 ## Como usar
